@@ -3,43 +3,82 @@ import java.io.*;
 import javax.swing.*;
 
 public class img {
-    static String file_name="";
+    static String file_name = "";
+    static String image_name;
+
     public static void Imageincrepted(int key, String increpted, String msg) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(null);
         File file = fileChooser.getSelectedFile();
-        
+        BufferedReader br;
+        FileReader fr;
+        int c = 0;
+        // file read
+        // try {
+
+        // fr = new FileReader("image.txt");
+        // br = new BufferedReader(fr);
+        // String line = br.readLine();
+        // String[] image_list = line.split(",");
+        // String selected_img=file.getName();
+        // for (String a : image_list) {
+        // System.out.println(a);
+        // if(a.equals(selected_img))
+        // {
+        // }
+        // }
+        // fr.close();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+
+        // image increption decrepion
         try {
-            BufferedWriter out = new BufferedWriter(
-                new FileWriter("image.txt", true));
+            BufferedWriter bw = new BufferedWriter(
+                    new FileWriter("image.txt", true));
             FileInputStream fis = new FileInputStream(file);
             byte[] data = new byte[fis.available()];
             fis.read(data);
             int i = 0;
 
-            for (byte b : data) {
+            x:for (byte b : data) {
                 if (increpted == "increpted") {
-                    file_name=file.getName();
+                    // file read
+                    fr = new FileReader("image.txt");
+                    br = new BufferedReader(fr);
+                    String line = br.readLine();
+                    String[] image_list = line.split(",");
+                    String selected_img = file.getName();
+                    for (String a : image_list) {
+                        if (a.equals(selected_img)) {
+                            c = 1;
+                            msg="file allready increpted..!";
+                            break x;
+                        }
+                    }
+                    if(c==0)
+                    {
+                    fr.close();
                     data[i] = (byte) (b ^ key);
                     System.out.println(b);
                     i++;
+                    }
                 } else {
                     data[i] = (byte) (data[i] ^ key);
-                    System.out.println(b);
+                    // System.out.println(b);
                     i++;
                 }
             }
-            System.out.println("file name="+file_name);
-            if(increpted=="increpted")
-            {
-                out.write(" ");
-                out.write(file_name);
+            System.out.println("file name=" + file_name);
+            if (increpted == "increpted") {
+                bw.write(",");
+                bw.write(file_name);
             }
             FileOutputStream f = new FileOutputStream(file);
             f.write(data);
             f.close();
             fis.close();
-            out.close();
+            bw.close();
             JOptionPane.showMessageDialog(null, msg);
 
         } catch (Exception e) {
