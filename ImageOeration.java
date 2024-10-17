@@ -32,8 +32,11 @@ public class ImageOeration{
                     fr = new FileReader("image.txt");
                     br = new BufferedReader(fr);
                     String line = br.readLine();
-                    String[] image_list = line.split(",");
                     selected_img = file.getName();
+                    if(line!=null)
+                    {
+                    String[] image_list = line.split(",");
+                    
                     for (String a : image_list) {
                         if (a.equals(selected_img)) {
                             c = 1;
@@ -41,11 +44,13 @@ public class ImageOeration{
                             break x;
                         }
                     }
+                }
                     if (c == 0) {
                         fr.close();
                         data[i] = (byte) (b ^ key);
                         i++;
                     }
+                
                 } else {
                     fr = new FileReader("image.txt");
                     br = new BufferedReader(fr);
@@ -60,7 +65,6 @@ public class ImageOeration{
                     }
                     if (c1 == 1) {
                         data[i] = (byte) (data[i] ^ key);
-                        System.out.println("inside if");
                         i++;
                     } else {
                         msg = "Image is not increpted..!";
@@ -76,13 +80,14 @@ public class ImageOeration{
                         FileWriter fileWriter = new FileWriter("image.txt", false);
                         fileWriter.write(modifiedContent);
                         fileWriter.close();
+                        c=1;
                     }
                 }
             }
             System.out.println("file name=" + file_name);
             if (c == 0) {
-                bw.write(",");
                 bw.write(selected_img);
+                bw.write(",");
             }
             FileOutputStream f = new FileOutputStream(file);
             f.write(data);
